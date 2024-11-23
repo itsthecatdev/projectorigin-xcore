@@ -1,0 +1,7 @@
+name: xcore
+version: '${version}'
+main: dev.projectorigin.xcore.Xcore
+api-version: '1.20'
+commands:
+  giveitem:
+    permission: xcore.commands.admin.giveitem
