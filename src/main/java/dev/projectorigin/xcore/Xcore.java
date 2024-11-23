@@ -1,15 +1,32 @@
 package dev.projectorigin.xcore;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
+import dev.projectorigin.xcore.hud.TFMPacketListener;
 import dev.projectorigin.xcore.hud.TextProcessor;
 import dev.projectorigin.xcore.items.ItemGiveCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Xcore extends JavaPlugin {
+
     private TextProcessor textProcessor;
+
     @Override
     public void onEnable() {
+        migrateConfiguration();
+        setupConfiguration();
+        textProcessor = new TextProcessor(this);
+        ProtocolLibrary.getProtocolManager().addPacketListener(new TFMPacketListener(
+                this, ListenerPriority.NORMAL,
+                PacketType.Play.Server.SET_ACTION_BAR_TEXT,
+                PacketType.Play.Server.BOSS,
+                PacketType.Play.Server.SCOREBOARD_OBJECTIVE,
+                PacketType.Play.Server.SCOREBOARD_TEAM));
+
         // Register the "giveitem" command
         getCommand("giveitem").setExecutor(new ItemGiveCommand());
         getCommand("giveitem").setTabCompleter(new ItemGiveCommand());
@@ -18,15 +35,12 @@ public final class Xcore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Any logic to execute when the plugin is disabled
+        HandlerList.unregisterAll(this);
     }
+
     public TextProcessor getTextProcessor() {
         return textProcessor;
     }
-
-
-
-
 
     // the following code is used for ACTIONBAR
     private void noKeyFound(String ...keys) {

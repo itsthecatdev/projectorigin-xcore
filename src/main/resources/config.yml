@@ -1,0 +1,21 @@
+fonts:
+  default-font:
+    name: namespace:key
+    special-symbol: $u
+regex:
+  value: '[\p{Print}&&[^~,],]+'
+  invert: false
+packets:
+  boss-bar:
+    enable: true
+    forced-font: default-font
+  action-bar:
+    enable: true
+    forced-font: default-font
+  scoreboard-title:
+    enable: true
+    forced-font: default-font
+  scoreboard-scores:
+    enable: true
+    forced-font: ''
+config-version: 1
